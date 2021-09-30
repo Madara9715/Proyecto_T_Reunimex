@@ -1,0 +1,352 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+body{
+ /*   background: #f4f5f7;  */
+   background: #e6e6e6; 
+}
+
+
+.fontgradradiant{
+    background: #0066cc;
+    color: white;
+    font-family:  Helvetica;
+ }
+
+.fontgradradiant0{
+    background-color: goldenrod;
+    color: white;
+    font-family:  Helvetica;
+ }
+
+.fontgradradiant1{
+    background-color: #0093E9;
+    background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+    color: white;
+    font-family:  Helvetica;
+ }
+
+ .fontgradradiant2{
+    background-image: linear-gradient(135deg,#333399 0%,  #667eea  100%);
+    color: white;
+    font-family:  Helvetica;
+ }
+
+
+ .headcardwhite{
+    color: white;
+    font-size: 1.2rem;
+    font-family:  Helvetica;
+ }
+
+ .inputblack{
+     background-color: black;
+     color: white;
+ }
+
+ .border30p{
+     border-radius: 30px;
+ }
+
+ .border50p{
+    border-radius: 50%;
+}
+
+ .nofont{
+    background: rgb(0, 0, 0);
+ }
+
+ .iconphoto {
+  object-fit: cover;
+  width:40px;
+  height:40px;
+ }
+
+ .tablephoto {
+  object-fit: cover;
+  width:70px;
+  height:70px;
+  box-shadow: 3px 3px 8px 1px rgba(0, 0, 0,0.4);
+ }
+
+ .showphoto{
+  width:150px;
+  height:150px;
+  box-shadow: 3px 3px 15px 1px rgba(0, 0, 0,0.5);
+ }
+
+ .lineagradient{
+  border-bottom: 2px solid transparent;
+  /* border-image: linear-gradient(to right, #00ffff , #0066cc, #333399); */
+  border-image: linear-gradient(to right, #ffcc00 ,#e60000, #0066cc);
+  border-image-slice: 1;
+ }
+
+ .transparentfont{
+   background: rgba(0, 0, 0, 0.7);
+   color: #8c8c8c;
+   border:none;
+ }
+
+ .transparentfont2{
+  background: transparent;
+  color: white;
+  border:none;
+} 
+
+ .transparentfont:hover{
+  background: rgba(0, 0, 0, 0.7);
+   color: white;
+   border:none;
+ }
+
+ .imgwhite:hover {
+   filter: brightness(115%);
+   transition: 0.3s;
+ }
+
+ .espacioletras{
+   letter-spacing: 0.2em;
+ }
+ 
+ .lineagradien2{
+   border-bottom: 2px solid transparent;
+   border-image: linear-gradient(to right, #ffcc00 ,#e60000, #000000);
+   border-image-slice: 1;
+  }
+
+
+.border30pbottom{
+   border-radius: 0px 0px 30px 30px;
+}
+
+.bordertable{
+  border-radius: 15px;
+  box-shadow: 4px 4px 7px 1px rgba(00,00,00,0.4);
+}
+
+
+.sidebar {
+   height: 100%;
+   width: 0;
+   position: fixed;
+   z-index: 1;
+   top: 0;
+   left: 0;
+   background-color: #0066cc;
+   overflow-x: hidden;
+   transition: 0.5s;
+   padding-top: 60px;
+   border-radius: 0px 40px 0px 0px;
+ }
+ 
+ .sidebar a {
+   padding: 8px 8px 8px 32px;
+   text-decoration: none;
+   font-size: 15px;
+   color: black;
+   display: block;
+   transition: 0.3s;
+ }
+
+ .sidebar button{
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+ 
+ .grad:hover {
+   color: #f1f1f1;
+   border-bottom: 2px solid transparent;
+ }
+ 
+ .sidebar .closebtn {
+   position: absolute;
+   top: 0;
+   right: 25px;
+   font-size: 36px;
+   margin-left: 50px;
+ }
+ 
+ .openbtn {
+   font-size: 20px;
+   cursor: pointer;
+   background-color:transparent;
+   color: black;
+   padding: 10px 15px;
+   border: none;
+ }
+ 
+ 
+ #main {
+   transition: margin-left .5s;
+   padding: 60px;
+ }
+
+ .navhide{
+  border-radius: 15px 15px 0px 0px; 
+  border: 2px solid transparent;
+  transition: 0.3s;
+ }
+
+ .navhide:hover{
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  border-bottom: 2px solid transparent;
+  transition: 0.3s; 
+ }
+
+ .navbody{
+  background: #e6b800;
+  box-shadow: 0 -8px 8px -8px #333;
+  /* border: 2px solid #000000; */
+}
+
+ .navhide:focus{
+  font-size: x-small;
+  text-decoration: underline;
+  letter-spacing: 3px;
+  background: #bba138;
+  color: #ffffff;
+  /* border: 2px solid #000000; */
+  border-bottom: 2px solid #bba138;
+  transition: 0.3s;
+  padding-bottom: 10px; 
+ }
+
+ .orangen2{
+   color:#ffffff;
+   background-color:transparent;
+   border-bottom: 2px solid transparent;
+   border-top: 2px solid transparent;
+ }
+
+ .orangen2:hover{
+  transition: 0.3s;
+  background-color:rgba(0, 0, 0, 0.5);
+  border-radius: 15px 15px 15px 15px; 
+  color:#ffcc00;
+}
+
+
+.rounded-corners-gradient-borders{
+   border-radius: 0px 0px 20px 20px; 
+   border: 2px solid #ffcc00;
+   border-top: 2px solid transparent;
+   border-image-slice: 1;
+}
+
+.rounded-corners-gradient-borders:hover{
+  border-radius: 0px 0px 20px 20px; 
+  border: 2px solid #ffcc00;
+  border-top: 2px solid transparent;
+  border-image-slice: 1;
+}
+
+.bt1 {
+ /* background-color: #A8EB12 ;
+ color:black; */
+ background-color: #000066;
+ color: #A8EB12;
+ border-radius: 5px;
+ box-shadow: 10px 10px 14px 1px rgba(00,00,00,0.2);
+}
+.bt2 {
+  background-color: 051937;
+  color: white;
+  border-radius: 50px;
+  box-shadow: 10px 10px 14px 1px rgba(00,00,00,0.2);
+}
+
+.table-dark{
+  background-color:  #262626;
+  color: #cccccc;
+}
+
+.dark-gray{
+  background-color:  #262626;
+  color: #cccccc;
+}
+
+.bigtitle{
+  font-family:  Helvetica;
+  font-size: 1.8em;
+}
+
+.textdarkgray{
+  color: #cccccc;
+}
+
+.clipboard{
+  background-color: transparent;
+}
+
+.btn-outline-danger{
+  color: white;
+  border-color:#fa5661;
+  text-shadow: #bf3039;
+}
+
+.btn-outline-danger:hover{
+  color: white;
+  background-color:#fa5661;
+  border-color:#fa5661;
+  text-shadow: #bf3039;
+}
+
+.bg-2{
+  color: white;
+  background-color: #000066;
+}
+
+.bg-2:hover{
+  color:  #A8EB12;
+}
+
+.iconwhite{
+  filter: invert(97%) sepia(67%) saturate(994%) hue-rotate(38deg) brightness(103%) contrast(102%);
+}
+
+.iconwhite:hover{
+  cursor: pointer;
+  transition: 0.3s;
+  filter: invert(30%) sepia(95%) saturate(4324%) hue-rotate(1deg) brightness(104%) contrast(108%);
+}
+
+.bt1:hover{
+  color:#b9f141;
+}
+
+.edit{
+  color: white;
+}
+ 
+.delete{
+  color: white;
+}
+
+ /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+ @media screen and (max-height: 450px) {
+   .sidebar {padding-top: 15px;}
+   .sidebar a {font-size: 18px;}
+ }
+
+
+ .cantidad{
+   color: #212122;
+ }
+
+
+ .remover{
+   color: white;
+ }
+

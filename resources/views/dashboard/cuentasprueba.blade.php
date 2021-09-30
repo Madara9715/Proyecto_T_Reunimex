@@ -1,0 +1,3 @@
+{{$cuenta}}
+{{$total}}
+{{$cantidad}}
