@@ -34,7 +34,6 @@ Route::group([//Usuarios admin activos
             'namespace' => 'Dashboard'
         ],function(){
             Route::resource('/departamentos', 'DepartamentoController');
-            Route::get('/empleados/paginacion', 'EmpleadoController@paginacion');
             Route::get('/borrar/{id}/empleado','EmpleadoController@infodelete')->name('eliminar');
             Route::resource('/empleados', 'EmpleadoController');
             Route::get('/almacen','InventarioController@almacen')->name('almacen');
@@ -75,7 +74,7 @@ Route::group([//Usuarios admin activos
             Route::resource('/pagos', 'PagoController');
             Route::resource('/deudas', 'DeudasController');
             Route::get('/clientes','ClientesAController@index')->name('clientes');
-           
+            Route::post('/newcliente','ClientesAController@nuevocliente')->name('newCliente');
         });
 
      });

@@ -73,6 +73,8 @@
     </div>
     @if ($nuevo==='departamento')
         @include('dashboard.new2')
+        @elseif($nuevo==='cliente_asesor')
+        @include('dashboard.newclienteA')
         @else
         @include('dashboard.new'.$nuevo)
     @endif

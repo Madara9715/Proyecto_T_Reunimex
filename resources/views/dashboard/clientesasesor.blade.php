@@ -5,7 +5,7 @@
 @section('content')
 <div class="container-fluid p-3">
     <div class="row d-flex"><
-
+        @include('layouts.tareas2')
         @if (Session::has('errors'))
         <script>
         $(document).ready(function() {
@@ -80,7 +80,7 @@
 
     </div>
 </div>
-
+@include('dashboard.newclienteA')
 
 
 @endsection
