@@ -137,6 +137,24 @@ class InventarioController extends Controller
         return view('dashboard.showinventario', compact('inventario','productosactivos'))->with('tablas', $encabezadotablas)->with('name', $namepanel)->with('panel', $panel)->with('cantidad', $cant);
     }
 
+    public function showAsesor()
+    {
+        $namepanel = "asesor";
+        $encabezadotablas = array("productos actualmente en inventario", "movimientos");
+        //$id = auth()->User()->empleado_id;//revisar como recuperar id de inventario de asesor
+        $idEmpleado= auth()->User()->empleado_id;
+        $id = DB::table('inventarios')->select('id')->where('empleado_id',$idEmpleado)->value('id');
+        $inventario = Inventario::find($id);
+        $prod = $inventario->productosactivos()->get()->unique('id');
+
+        $productosactivos = $inventario ->presentacioneproductosactiva;
+
+        $cant = $prod->count(); 
+        $panel = "inventario: ".$inventario->empleado->nombre_empleado." ".$inventario->empleado->apellido_p."";
+        
+
+        return view('dashboard.showinventarioasesor', compact('inventario','productosactivos'))->with('tablas', $encabezadotablas)->with('name', $namepanel)->with('panel', $panel)->with('cantidad', $cant);
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -177,10 +195,9 @@ class InventarioController extends Controller
         $entradas = 0;
         $salidas = 0;
 
-        foreach ($inv->productosactivos as $relacion) {//Desactivar productos del inventario anterior
-            $relacion->pivot->status = 0; 
-            $relacion->pivot->updated_at = now();
-            $relacion->pivot->save();
+        foreach ($inv->productosactivos as $relacion) {//Desactivar productos del inventario anterior 
+            $relacion->pivot->delete();
+            //$relacion->pivot->save();
          }
 
         $todo = $request->get('todo');
@@ -196,9 +213,9 @@ class InventarioController extends Controller
             } 
         }
 
-        $almace = Almacene::find(1);
+        //$almace = Almacene::find(1);
 
-        if($entradas>0){
+        /*if($entradas>0){
            // echo "Vamos a generar un movimiento de entrada y su origen y destino ".$entradas;
             $move = Movimiento::create(
                 [
@@ -236,7 +253,7 @@ class InventarioController extends Controller
                     'movimiento_id'=>$movs->id
                 ]
             );
-        }
+        }*/
 
          
      
@@ -261,7 +278,7 @@ class InventarioController extends Controller
 
 
              
-        if($resurtir[1] != "0"){//Movimiento entrada y salida del inventario
+        /*if($resurtir[1] != "0"){//Movimiento entrada y salida del inventario
             if($resurtir[2] == "+"){
                 //echo "<br> -Entrada al inventario, cantidad: ".$resurtir[1];
                  $move->productos()->attach(
@@ -286,7 +303,7 @@ class InventarioController extends Controller
                     ]
                  );
             }
-        }
+        }*/
         // echo "<br>id presentacion_producto: ".$preprod->id." producto_id: ".$preprod->producto_id." presentacion_id: ".$preprod->presentacione_id."<br>";
       }  
 

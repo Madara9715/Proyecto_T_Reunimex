@@ -74,7 +74,7 @@ class AppServiceProvider extends ServiceProvider
                    );
 
                    $route = array(
-                    array("asesor",),
+                    array("Ainventario",),
                     array("clientes","deudas.index","pagos.index"),
                     array("asesor","ventas.index")
                    );

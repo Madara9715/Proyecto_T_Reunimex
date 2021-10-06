@@ -75,6 +75,7 @@ Route::group([//Usuarios admin activos
             Route::resource('/deudas', 'DeudasController');
             Route::get('/clientes','ClientesAController@index')->name('clientes');
             Route::post('/newcliente','ClientesAController@nuevocliente')->name('newCliente');
+            Route::get('/inventario', 'InventarioController@showAsesor')->name('Ainventario');
         });
 
      });
