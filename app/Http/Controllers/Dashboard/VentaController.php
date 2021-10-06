@@ -110,19 +110,19 @@ class VentaController extends Controller
             $totalreal = 0;
             $idCliente= $request->cliente;
             foreach($todo as $all){
-                $checar_es = explode (",", $all); 
-                $prod = $inv->presentacioneproductosactiva()->find($checar_es[0]);
-                if(($checar_es[2])==1){
-                    $totalventa=  $totalventa+ (($checar_es[1]) *  ($prod->precio_publico));	
+                $checar_es = explode (",", $all); //separa en un arreglo id de producto, cantidad y tipo de precio de la lista de productos
+                $prod = $inv->presentacioneproductosactiva()->find($checar_es[0]);//encuentra en el inventario el producto de la lista de productos
+                if(($checar_es[2])==1){//verifica el tipo  de precio 
+                    $totalventa=  $totalventa+ (($checar_es[1]) *  ($prod->precio_publico));	//saca el importe del producto cantidad x precio para un precio publico
                 }else{
-                    $totalventa=  $totalventa+ (($checar_es[1]) *  ($prod->precio_distribuidor));
+                    $totalventa=  $totalventa+ (($checar_es[1]) *  ($prod->precio_distribuidor));// saca el importe del producto para precio distribuidor
                 }
-                $totalreal = $totalreal + (($checar_es[1]) *  ($prod->precio_publico));
+                //$totalreal = $totalreal + (($checar_es[1]) *  ($prod->precio_publico));
                 //$cantmax = $inv->productosactivos()->where('presentacioneproducto_id',$checar_es[0])->get();
             } 
             //dd($cantmax);
 
-            if(($request->tipoventa)==1){
+            if(($request->tipoventa)==1){//verifica si es una venta a contado
                 $venta = Venta::create(
                     [
                     'cliente_id'  => $request->cliente,
@@ -130,7 +130,7 @@ class VentaController extends Controller
                     'tipoventa_id'  => $request->tipoventa,
                     'tipopago_id'  => $request->tipopago,
                     'observaciones' => "Ninguna",
-                    'subtotal_venta' => $totalreal,
+                    'subtotal_venta' => $totalventa,
                     'total_venta' => $totalventa,
                     'activo' => 1,
                     ]
@@ -148,24 +148,24 @@ class VentaController extends Controller
                     }else{
                         $importeind=   (($checar_es[1]) *  ($prod->precio_distribuidor));
                     }
-    
-                    $invprod =  $inv ->productosactivos()->where('presentacioneproducto_id',$prod->id)->first();
-                    $invprod->pivot->stock_restante = $invprod->pivot->stock_restante - $checar_es[1];
-                    $invprod->pivot->save();
-                    $inporteU= $importeind/$checar_es[1];
+                    //resta la compra al inventario del asesor
+                    //$invprod =  $inv ->productosactivos()->where('presentacioneproducto_id',$prod->id)->first();
+                    //$invprod->pivot->stock_restante = $invprod->pivot->stock_restante - $checar_es[1];
+                    //$invprod->pivot->save();
+                    $inporteU= $importeind/$checar_es[1];//calcula precio unitario
                     ProductoVenta::create([
                         'venta_id' => $venta->id,
                         'producto_id' =>$prod->producto_id,
                         'presentacione_id' => $prod->presentacione_id,
                         'presentacioneproducto_id'=>$prod->id,
                         'cantidad' => $checar_es[1],
-                        'importe' => $inporteU,
+                        'importe' => $inporteU,//dice importe pero lo tomare como precio unitario 
                         'descuento' => null,
                         'total_importe' => $importeind,
                         ]
                     ); 
                 }
-            }else{
+            }else{//Ventas a credito o Consigna
                 $venta = Venta::create(
                     [
                     'cliente_id'  => $request->cliente,
@@ -173,54 +173,54 @@ class VentaController extends Controller
                     'tipoventa_id'  => $request->tipoventa,
                     'tipopago_id'  => $request->tipopago,
                     'observaciones' => "Ninguna",
-                    'subtotal_venta' => $totalreal,
+                    'subtotal_venta' => $totalventa,
                     'total_venta' => $totalventa,
                     'activo' => 1,
                     ]
                 );
     
               
-                $importeind = 0;
+                
                 foreach($todo as $all){
                     $checar_es = explode (",", $all); 
                     $prod = $inv->presentacioneproductosactiva()->find($checar_es[0]);
     
-                    
+                    $importeind = 0;
                     if(($checar_es[2])==1){
                         $importeind=   (($checar_es[1]) *  ($prod->precio_publico));	
                     }else{
                         $importeind=   (($checar_es[1]) *  ($prod->precio_distribuidor));
                     }
-    
-                    $invprod =  $inv ->productosactivos()->where('presentacioneproducto_id',$prod->id)->first();
-                    $invprod->pivot->stock_restante = $invprod->pivot->stock_restante - $checar_es[1];
-                    $invprod->pivot->save();
-                    $inporteU= $importeind/$checar_es[1];
+                    //Resta el inventario al producto del asesor   
+                    //$invprod =  $inv ->productosactivos()->where('presentacioneproducto_id',$prod->id)->first();
+                    //$invprod->pivot->stock_restante = $invprod->pivot->stock_restante - $checar_es[1];
+                    //$invprod->pivot->save();
+                    $inporteU= $importeind/$checar_es[1];//precio unitario
                     ProductoVenta::create([
                         'venta_id' => $venta->id,
                         'producto_id' =>$prod->producto_id,
                         'presentacione_id' => $prod->presentacione_id,
                         'presentacioneproducto_id'=>$prod->id,
                         'cantidad' => $checar_es[1],
-                        'importe' => $inporteU,
+                        'importe' => $inporteU,//dice importe pero lo tomare como valor unitario 
                         'descuento' => null,
                         'total_importe' => $importeind,
                         ]
                     );  
                 }
-                $cantidad=Cuenta::where('cliente_id',$idCliente)->count();
+                $cantidad=Cuenta::where('cliente_id',$idCliente)->count();//cuenta si hay una cuenta pra ese cliente
                 $totalcuenta=0;
                 $monto_restante=0;
-                if($cantidad!=0)
+                if($cantidad!=0)//si ya hay una cuenta no la creara
                 {
                     $idCuenta=Cuenta::where('cliente_id',$idCliente)->value('id');
                     $cuenta=Cuenta::find($idCuenta);
                     $totalcuenta= $cuenta->valor_total;
                     $monto_restante= $cuenta->monto_restante;
                     $totalcuenta+=$totalventa;
-                    $monto_restante+=$totalventa;
-                    $cuenta->valor_total=$totalcuenta;
-                    $cuenta->monto_restante=$monto_restante;
+                    $monto_restante+=$totalventa;//al monto restante se le suma el total de la venta nueva
+                    $cuenta->valor_total=$totalcuenta;//el monto total es el monto total de compra que tiene en total de todas sus deudas. 
+                    $cuenta->monto_restante=$monto_restante;//actualizo el monto restante con la nueva compra
                     $cuenta->save();
 
                 $FechaActual=date("Y-m-d");
@@ -229,13 +229,13 @@ class VentaController extends Controller
                     'cuenta_id' => $cuenta->id,
                     'venta_id' => $venta->id,
                     'valor_total' => $totalventa,
-                    'monto_restante' => $importeind,
+                    'monto_restante' => $totalventa,
                     'fecha_limite'=> $fecha_limite,
                     'activo' => 1,
                     ]
                 );
                 }
-                else{
+                else{//si no existe una cuenta se crea una 
                     $cuenta=Cuenta::create([
                         'cliente_id'  => $request->cliente,
                         'valor_total' => $totalventa,
@@ -249,7 +249,7 @@ class VentaController extends Controller
                     'cuenta_id' => $cuenta->id,
                     'venta_id' => $venta->id,
                     'valor_total' => $totalventa,
-                    'monto_restante' => $importeind,
+                    'monto_restante' => $totalventa,
                     'fecha_limite'=> $fecha_limite,
                     'activo' => 1,
                     ]

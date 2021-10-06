@@ -16,9 +16,9 @@
         </script>
         @endif
 
-        <div class="card col-md-8 dark-gray m-3 pt-3 bordertable mx-auto">
+        <div class="card col-md-8 m-3 pt-3 bordertable mx-auto">
 
-            <div class="card-header fontgradradiant text-uppercase espacioletras">
+            <div class="card-header nofont text-white text-uppercase espacioletras">
                 <span>
                     <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-ui-checks" fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg">
@@ -34,10 +34,10 @@
                 <span class="mx-2">{{$panel}}</span>
 
             </div>
-            <div class="card-body dark-gray p-1">
+            <div class="card-body p-1">
                 <div class="table-responsive-sm">
 
-                    <table class="table table-sm table-dark table-hover">
+                    <table class="table table-sm table-hover">
                         <thead>
                             <tr class="text-uppercase espacioletras text-muted">
                                 

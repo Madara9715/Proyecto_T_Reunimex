@@ -56,7 +56,7 @@ class Pago extends Model
             }  
             else {
                 $newpago->update([
-                    'folio' => 'D-0000000' . $newpago->id,
+                    'folio' => 'P-0000000' . $newpago->id,
                 ]);
             }
         });

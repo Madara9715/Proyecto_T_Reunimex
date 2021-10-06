@@ -20,7 +20,7 @@ class PagoController extends Controller
     {
         $namepanel= "asesor";
         $panel= "pago";
-        $idempleado = auth()->id();
+        $idempleado = auth()->User()->empleado_id;
         $clientesinf = DB::table('clientes')
                 ->join('cuentas', 'clientes.id', '=', 'cuentas.cliente_id')
                 ->join('deudas', 'cuentas.id', '=', 'deudas.cuenta_id')
@@ -51,7 +51,7 @@ class PagoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request)//carga un pago nuevo 
     {
         //
         $this->validate($request,[
@@ -70,45 +70,46 @@ class PagoController extends Controller
             'max' => 'El campo :attribute no debe ser mayor a :max carácteres'
         ]);
 
-        $newpago = new Pago;
+        $newpago = new Pago;//se registra un nuevo pago 
         $id_deuda=$request->input('deuda_id');
         $newpago->deuda_id = $request->input('deuda_id');
         $newpago->numero_pago = $request->input('numero_pago');
         $newpago->folio=$request->input('folio');
         $newpago->tipopago_id = $request->input('tipopago_id');
         $newpago->saldo_anterior = $request->input('saldo_anterior');
-        $SaldoAnterior= $request->input('saldo_anterior');
-        $MontoAbonado= $request->input('monto_abonado');
+        $SaldoAnterior= $request->input('saldo_anterior');//recupero el saldo anterior 
+        $MontoAbonado= $request->input('monto_abonado');//recupero el monto abonado en el pago actual
         $newpago->monto_abonado = $request->input('monto_abonado');
         $newpago->saldo_actual = $SaldoAnterior-$MontoAbonado;
         $newSaldo = $SaldoAnterior-$MontoAbonado;
         $newpago->detalles = $request->input('detalles');
         $newpago->save();
        
-        $MontoPagado = DB::table('deudas')->select('deudas.monto_abonado')->where('id',$id_deuda)->value('monto_abonado');
+        $MontoPagado = DB::table('deudas')->select('deudas.monto_abonado')->where('id',$id_deuda)->value('monto_abonado');//recupero lo que ha pagado de su deuda
 
-        $NewMonto=$MontoPagado+$MontoAbonado;
+        $NewMonto=$MontoPagado+$MontoAbonado;//suma lo pagado al nuevo pago
 
         $UpdateDeuda = DB::table('deudas')
               ->where('id', $id_deuda)
-              ->update(['monto_abonado' =>$NewMonto,'monto_restante'=>$newSaldo]);
-        $CuentaID = DB::table('clientes')
+              ->update(['monto_abonado' =>$NewMonto,'monto_restante'=>$newSaldo]);//actualiza en la deuda el monto abonado a la fecha y su deuda restante.
+        /*$CuentaID = DB::table('clientes')//recupero el id de la cuenta, la consulta es muy grande solo para el id de la cuenta, no se para que el join
                 ->join('cuentas', 'clientes.id', '=', 'cuentas.cliente_id')
                 ->join('deudas', 'cuentas.id', '=', 'deudas.cuenta_id')
                 ->select('deudas.cuenta_id')->where('deudas.id',$id_deuda)
-                ->value('id');
-        $CuentaU= Cuenta::find($CuentaID);
-        $montoRestante=($CuentaU->monto_restante)-$MontoAbonado;
-        $UpateCuenta = DB::table('cuentas')
+                ->value('id');*/
+                $CuentaID = DB::table('deudas')->select('cuenta_id')->where('id',$id_deuda)->value('id');//la consulta de arriba pero mas corta
+        $CuentaU= Cuenta::find($CuentaID);//recupero la cuenta a la que pertenece la deuda
+        $montoRestante=($CuentaU->monto_restante)-$MontoAbonado;//resto el pago al monto restante de la cuenta total.
+        $UpdateCuenta = DB::table('cuentas')
                 ->where('id',$CuentaID)
-                ->update(['monto_abonado'=>$NewMonto,'monto_restante'=>$montoRestante]);
-        if($newSaldo==0)
+                ->update(['monto_abonado'=>$NewMonto,'monto_restante'=>$montoRestante]);//actualizo el monto restante de la cuenta
+        if($newSaldo==0)//si el saldo restante de la deuda es igual a 0 entonces se deshabilita ya que se termino de pagar.
         {
-            $UpateCuenta = DB::table('deudas')
+            $UpdateDeuda = DB::table('deudas')
                 ->where('id',$id_deuda)
                 ->update(['activo'=>0]);
         }
-        return redirect()->route('pagos.index');
+        return redirect()->route('pagos.index');//redirije a la ruta pagos
     }
 
     /**
@@ -133,16 +134,17 @@ class PagoController extends Controller
                 ->get()->last();
         $tipo_pago = Tipopago::all();
         $folios=DB::table('pagos')
-                ->select('pagos.folio')->get()->last();
+                ->select('pagos.folio')->get()->last();//recupera el ultimopago
         $panel= "Deuda: ";
-                if(!empty($folios))
+                if(!empty($folios))//verifica si ya hay pagos
                 {
                     $ultfolio = $folios->folio;
-                    $clave = preg_split("/[-]/", $ultfolio);
+                    $split = preg_split("/[-]/", $ultfolio);//separa el ultimo pago para aumentar uno 
+                    $clave= $split[0]."-".($split[1]+1);
                 }
                 else
                 {
-                    $clave="P-00000001";
+                    $clave="P-1";//en caso de no haber pagos se manda el 1
                 }
         return view('dashboard.newpago',compact('deuda','pagos','tipo_pago','clave'))->with('name', $namepanel)->with('panel', $panel);
     }

@@ -68,7 +68,8 @@
                         <span
                             class="textdarkgray text-capitalize font-weight-bold bigtitle"></span>
                         @if(empty($pagos))
-                            <input type="text" class="form-control border30p nofont inputblack" value="1" name="numero_pago">
+                        <span class="textdarkgray text-justify">1</span>
+                            <input type="hidden" class="form-control border30p nofont inputblack" value="1" name="numero_pago">
                         @else
                             @foreach ($pagos as $pago)
                             <span class="textdarkgray text-justify">{{($pago+1)}}</span>
@@ -88,8 +89,8 @@
                         </label>
                         <span
                             class="textdarkgray text-capitalize font-weight-bold bigtitle"></span>
-                            <span class="textdarkgray text-justify">{{$clave[0]}}-000{{($clave[1])+1}}</span>
-                                <input type="hidden" class="form-control border30p nofont inputblack" value="{{$clave[0]}}-000{{($clave[1])+1}}" name="folio"> 
+                            <span class="textdarkgray text-justify">{{$clave}}</span>
+                                <input type="hidden" class="form-control border30p nofont inputblack" value="{{$clave}}" name="folio"> 
                         @if($errors->has('folio'))
                         <span class="text-danger">
                             {{ $errors->first('folio') }}
